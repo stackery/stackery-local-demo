@@ -18,10 +18,13 @@ Resources:
         - AWSXrayWriteOnlyAccess
         - DynamoDBCrudPolicy:
             TableName: !Ref Data
+        - AWSSecretsManagerGetSecretValuePolicy:
+            SecretArn: !Sub arn:${AWS::Partition}:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/${EnvironmentTagName}/*
       Environment:
         Variables:
           TABLE_NAME: !Ref Data
           TABLE_ARN: !GetAtt Data.Arn
+          SECRETS_NAMESPACE: !Sub /${EnvironmentTagName}/
     Metadata:
       StackeryName: writeToTable
   Data:
